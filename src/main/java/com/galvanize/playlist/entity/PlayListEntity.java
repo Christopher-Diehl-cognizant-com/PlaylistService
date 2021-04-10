@@ -30,4 +30,8 @@ public class PlayListEntity {
         }
         this.songList.add(songName);
     }
+
+    public void removeSong(String songName){
+        this.songList.remove(songName);
+    }
 }

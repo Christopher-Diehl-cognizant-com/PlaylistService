@@ -41,8 +41,20 @@ public class PlayListService {
 
         this.playListRepo.save(playListEntity);
 
-        customResponse.setMessage("Successfully: Added song to test_list playlist.");
+        customResponse.setMessage("Successfully: Added song to "+playListEntity.getName()+" playlist.");
         customResponse.setStatus(HttpStatus.CREATED);
+        return customResponse;
+    }
+
+    public CustomResponse removeSong2Playlist(String playlistName,String songName){
+        CustomResponse customResponse = new CustomResponse();
+        PlayListEntity playListEntity=this.playListRepo.findPlayListEntityByName(playlistName);
+        playListEntity.removeSong(songName);
+
+        this.playListRepo.save(playListEntity);
+
+        customResponse.setMessage("Successfully: Removed song from "+playListEntity.getName()+" playlist.");
+        customResponse.setStatus(HttpStatus.NO_CONTENT);
         return customResponse;
     }
 

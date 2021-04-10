@@ -21,7 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -98,5 +100,25 @@ public class PlayListServiceUnitTest {
         assertNotNull(actualResponse);
         assertEquals(actualResponse.getStatus(), HttpStatus.CREATED);
         assertEquals(actualResponse.getMessage(), "Successfully: Added song to test_list playlist.");
+    }
+
+    @Test
+    public void removeSong2PlaylistTest() throws Exception {
+        PlayListEntity playListEntity = new PlayListEntity();
+        playListEntity.setName("test_list");
+        playListEntity.addSong("first_song");
+        playListEntity.addSong("remove_song");
+
+        when(this.playListRepo.findPlayListEntityByName("test_list"))
+                .thenReturn(playListEntity);
+
+        CustomResponse actualResponse = this.playListService.removeSong2Playlist("test_list","remove_song");
+
+        verify(this.playListRepo).save(playListEntity);
+
+        assertNotNull(actualResponse);
+        assertEquals(actualResponse.getStatus(),HttpStatus.NO_CONTENT);
+        assertEquals(actualResponse.getMessage(),"Successfully: Removed song from test_list playlist.");
+
     }
 }

@@ -26,4 +26,11 @@ public class PlaylistController {
         return new ResponseEntity<>(customResponse, customResponse.getStatus());
     }
 
+    @DeleteMapping("/song")
+    public ResponseEntity<?> removeSong2PlayList(@RequestParam("name") String name, @RequestParam("song_name") String songName){
+        CustomResponse customResponse = this.playListService.removeSong2Playlist(name,songName);
+        return new ResponseEntity<>(customResponse, customResponse.getStatus());
+    }
+
+
 }

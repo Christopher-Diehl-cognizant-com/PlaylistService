@@ -1,6 +1,7 @@
 package com.galvanize.playlist.unit.controller;
 
 import com.galvanize.playlist.controller.PlaylistController;
+import com.galvanize.playlist.entity.PlayListEntity;
 import com.galvanize.playlist.response.CustomResponse;
 import com.galvanize.playlist.service.PlayListService;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -107,4 +108,20 @@ public class PlayListControllerUnitTest {
                 .andExpect(jsonPath("message").value("Successfully: Added song to test_list playlist."));
     }
 
+    @Test
+    public void removeSong2PlaylistTest() throws Exception {
+        RequestBuilder requestBuilder= delete("/playlist/song")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("name","test_list")
+                .param("song_name","remove_song");
+        CustomResponse customResponse = new CustomResponse();
+        customResponse.setMessage("Successfully: Removed song from test_list playlist.");
+        customResponse.setStatus(HttpStatus.NO_CONTENT);
+        when(playListService.removeSong2Playlist(anyString(),anyString())).thenReturn(customResponse);
+
+        this.mockMvc.perform(requestBuilder)
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("message").value("Successfully: Removed song from test_list playlist."))
+                .andDo(print());
+    }
 }
