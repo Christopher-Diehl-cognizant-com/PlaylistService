@@ -59,7 +59,12 @@ public class PlayListService {
         return customResponse;
     }
 
-    public PlayListSongsResponse getPlaylistSongs(String anyString) {
-        return null;
+    public PlayListSongsResponse getPlaylistSongs(String name) {
+        PlayListEntity savedPlayListEntity = playListRepo.findPlayListEntityByName(name);
+        PlayListSongsResponse playListSongsResponse = new PlayListSongsResponse();
+        playListSongsResponse.setSongs(savedPlayListEntity.getSongList());
+        playListSongsResponse.setStatus(HttpStatus.OK);
+        playListSongsResponse.setMessage("Playlist test_list songs.");
+        return playListSongsResponse;
     }
 }
