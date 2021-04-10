@@ -120,7 +120,7 @@ Hint: For auto deploy please follow step 4.
 
 Feel free to play with our sample server.
 
-- ([Server# 1](https://*.herokuapp.com/))
+- ([Server# 1](https://chrisdiehlcognizantplaylist.herokuapp.com))
 
 ## API
 
@@ -135,6 +135,8 @@ Schemes: http
 ```
 
 ## API Reference
+
+- [Server Docs](https://chrisdiehlcognizantplaylist.herokuapp.com/docs/index.html)
 
 <table style="
     width: 100%;
@@ -160,7 +162,7 @@ Schemes: http
       <a href="#summary">/playlist</a>
     </td>
     <td style="border: 1px solid #ddd;padding: 5px;">
-      <a href="#playlist">POST</a>
+      <a href="#post-playlist">POST</a>
     </td>
     <td style="border: 1px solid #ddd;padding: 5px;">
       <p>Create Playlist. </p>
@@ -174,7 +176,7 @@ Schemes: http
       <a href="#summary">/playlist/song</a>
     </td>
     <td style="border: 1px solid #ddd;padding: 5px;">
-      <a href="#add-song">PUT</a>
+      <a href="#put-playlistsong">PUT</a>
     </td>
     <td style="border: 1px solid #ddd;padding: 5px;">
       <p>Add song into Playlist.  </p>
@@ -185,7 +187,7 @@ Schemes: http
   </tr>
   <tr>
     <td style="border: 1px solid #ddd;padding: 5px;">
-      <a href="#delete-song">DELETE</a>
+      <a href="#delete-playlistsong">DELETE</a>
     </td>
     <td style="border: 1px solid #ddd;padding: 5px;">
       <p>Delete Song from Playlist</p>
@@ -196,7 +198,7 @@ Schemes: http
   </tr>
   <tr>
     <td style="border: 1px solid #ddd;padding: 5px;">
-      <a href="#list-songs">GET</a>
+      <a href="#get-playlistsong">GET</a>
     </td>
     <td style="border: 1px solid #ddd;padding: 5px;">
       <p>Get All the songs of a Playlist</p>
