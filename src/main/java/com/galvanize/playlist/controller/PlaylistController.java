@@ -1,11 +1,14 @@
 package com.galvanize.playlist.controller;
 
 import com.galvanize.playlist.response.CustomResponse;
+import com.galvanize.playlist.response.PlayListSongsResponse;
 import com.galvanize.playlist.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/playlist")
@@ -32,5 +35,13 @@ public class PlaylistController {
         return new ResponseEntity<>(customResponse, customResponse.getStatus());
     }
 
+    @GetMapping("/song")
+    public ResponseEntity<?> playListSongs(@RequestParam("name") String name){
+        PlayListSongsResponse playListSongsResponse = new PlayListSongsResponse();
+        playListSongsResponse.setStatus(HttpStatus.OK);
+        playListSongsResponse.setMessage("Playlist test_list songs.");
+        playListSongsResponse.setSongs(Arrays.asList("song 1", "song 2"));
+        return new ResponseEntity<>(playListSongsResponse, playListSongsResponse.getStatus());
+    }
 
 }

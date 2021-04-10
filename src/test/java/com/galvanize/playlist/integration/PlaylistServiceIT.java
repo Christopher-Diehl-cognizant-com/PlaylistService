@@ -127,8 +127,8 @@ public class PlaylistServiceIT {
     public void getPlayListSongs() throws Exception {
         PlayListEntity playListEntity = new PlayListEntity();
         playListEntity.setName("test_list");
-        playListEntity.addSong("first_song");
-        playListEntity.addSong("remove_song");
+        playListEntity.addSong("song 1");
+        playListEntity.addSong("song 2");
         playListRepo.save(playListEntity);
         RequestBuilder rq = get("/playlist/song")
                             .param("name", "test_list")
@@ -136,7 +136,9 @@ public class PlaylistServiceIT {
 
         this.mockMvc.perform(rq)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.songs", hasSize(2)))
+                .andExpect(jsonPath("$.songs[0]").value("song 1"))
+                .andExpect(jsonPath("$.songs[1]").value("song 2"))
                 .andDo(print());
     }
 }
