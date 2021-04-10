@@ -22,9 +22,7 @@ public class PlaylistController {
 
     @PutMapping("/song")
     public ResponseEntity<?> addSong2PlayList(@RequestParam("name") String name, @RequestParam("song_name") String songName){
-        CustomResponse customResponse = new CustomResponse();
-        customResponse.setMessage("Successfully: Added song to test_list playlist.");
-        customResponse.setStatus(HttpStatus.CREATED);
+        CustomResponse customResponse = this.playListService.addSong2Playlist(name,songName);
         return new ResponseEntity<>(customResponse, customResponse.getStatus());
     }
 

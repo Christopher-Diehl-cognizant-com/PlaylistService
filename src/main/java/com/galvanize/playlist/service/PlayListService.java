@@ -34,4 +34,8 @@ public class PlayListService {
         return customResponse;
     }
 
+    public CustomResponse addSong2Playlist(String playlistName,String songName){
+        return null;
+    }
+
 }
