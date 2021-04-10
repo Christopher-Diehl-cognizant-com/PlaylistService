@@ -69,6 +69,12 @@ public class PlayListControllerUnitTest {
                 .andExpect(jsonPath("message").value("Unsuccessful: Already Exist."));
     }
 
+    /**
+     * When a playlist is created with existing name
+     * Then a message is returned that it was unsuccessful.
+     * @throws Exception
+     */
+
     @Test
     public void createNewPlaylistFailedEmptyNameTest() throws Exception {
         RequestBuilder requestBuilder= post("/playlist")
