@@ -67,5 +67,19 @@ public class PlayListServiceUnitTest {
 
     }
 
+    /**
+     * When a playlist is created with existing name
+     * Then a message is returned that it was unsuccessful.
+     * @throws Exception
+     */
+
+    @Test
+    public void createNewPlaylistFailedEmptyNameTest() throws Exception {
+        CustomResponse actualResponse = playListService.createPlaylist("");
+        assertNotNull(actualResponse);
+        assertEquals(actualResponse.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(actualResponse.getMessage(), "Unsuccessful: Please enter playlist name.");
+
+    }
 
 }

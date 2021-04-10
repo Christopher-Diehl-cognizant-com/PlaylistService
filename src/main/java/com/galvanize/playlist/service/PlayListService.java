@@ -15,6 +15,11 @@ public class PlayListService {
 
     public CustomResponse createPlaylist(String name) {
         CustomResponse customResponse = new CustomResponse();
+        if(name == null || name.length()<=0){
+            customResponse.setMessage("Unsuccessful: Please enter playlist name.");
+            customResponse.setStatus(HttpStatus.BAD_REQUEST);
+            return customResponse;
+        }
         if(playListRepo.findPlayListEntityByName(name) != null){
             customResponse.setMessage("Unsuccessful: Already Exist.");
             customResponse.setStatus(HttpStatus.BAD_REQUEST);
