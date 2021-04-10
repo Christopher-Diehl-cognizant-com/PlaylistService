@@ -3,12 +3,14 @@ package com.galvanize.playlist.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.playlist.entity.PlayListEntity;
 import com.galvanize.playlist.repository.PlayListRepo;
+import com.galvanize.playlist.response.CustomResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,7 +18,10 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,5 +86,19 @@ public class PlaylistServiceIT {
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").value("Unsuccessful: Please enter playlist name."));
+    }
+
+    @Test
+    public void addSong2PlaylistTest() throws Exception {
+        RequestBuilder requestBuilder= put("/playlist/song")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("name","test_list")
+                .param("song_name","My song");
+        CustomResponse customResponse = new CustomResponse();
+        customResponse.setMessage("Successfully: Added song to test_list playlist.");
+        customResponse.setStatus(HttpStatus.CREATED);
+        this.mockMvc.perform(requestBuilder)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("message").value("Successfully: Added song to test_list playlist."));
     }
 }
