@@ -10,13 +10,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.RequestBuilder;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -28,8 +35,6 @@ public class PlayListServiceUnitTest {
 
     @Mock
     private PlayListRepo playListRepo;
-
-
 
     /**
      * When a playlist is created with a name
@@ -80,4 +85,18 @@ public class PlayListServiceUnitTest {
 
     }
 
+    @Test
+    public void addSong2PlaylistTest() throws Exception {
+        PlayListEntity playListEntity=new PlayListEntity();
+        playListEntity.setName("test_list");
+        playListEntity.setSongList(new ArrayList<String>());
+        when(this.playListRepo.findPlayListEntityByName("test_list"))
+                .thenReturn(playListEntity);
+
+        CustomResponse actualResponse = playListService.addSong2Playlist("test_list","test_song");
+        verify(this.playListRepo).save(playListEntity);
+        assertNotNull(actualResponse);
+        assertEquals(actualResponse.getStatus(), HttpStatus.CREATED);
+        assertEquals(actualResponse.getMessage(), "Successfully: Added song to test_list playlist.");
+    }
 }

@@ -35,7 +35,15 @@ public class PlayListService {
     }
 
     public CustomResponse addSong2Playlist(String playlistName,String songName){
-        return null;
+        CustomResponse customResponse = new CustomResponse();
+        PlayListEntity playListEntity=this.playListRepo.findPlayListEntityByName(playlistName);
+        playListEntity.addSong(songName);
+
+        this.playListRepo.save(playListEntity);
+
+        customResponse.setMessage("Successfully: Added song to test_list playlist.");
+        customResponse.setStatus(HttpStatus.CREATED);
+        return customResponse;
     }
 
 }

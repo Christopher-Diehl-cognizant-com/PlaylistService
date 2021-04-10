@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,4 +20,14 @@ public class PlayListEntity {
 
     @Column(unique = true)
     private String name;
+
+    @ElementCollection
+    private List<String> songList;
+
+    public void addSong(String songName){
+        if(this.songList==null){
+            this.songList=new ArrayList<String>();
+        }
+        this.songList.add(songName);
+    }
 }

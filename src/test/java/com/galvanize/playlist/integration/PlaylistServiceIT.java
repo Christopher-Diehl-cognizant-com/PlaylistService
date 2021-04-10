@@ -90,6 +90,10 @@ public class PlaylistServiceIT {
 
     @Test
     public void addSong2PlaylistTest() throws Exception {
+        PlayListEntity playListEntity = new PlayListEntity();
+        playListEntity.setName("test_list");
+        playListRepo.save(playListEntity);
+
         RequestBuilder requestBuilder= put("/playlist/song")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .param("name","test_list")
