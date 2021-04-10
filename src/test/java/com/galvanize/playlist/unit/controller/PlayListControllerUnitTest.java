@@ -69,6 +69,19 @@ public class PlayListControllerUnitTest {
                 .andExpect(jsonPath("message").value("Unsuccessful: Already Exist."));
     }
 
+    @Test
+    public void createNewPlaylistFailedEmptyNameTest() throws Exception {
+        RequestBuilder requestBuilder= post("/playlist")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("name","test_list");
+        CustomResponse customResponse = new CustomResponse();
+        customResponse.setMessage("Unsuccessful: Please enter playlist name.");
+        customResponse.setStatus(HttpStatus.BAD_REQUEST);
+        when(playListService.createPlaylist(anyString())).thenReturn(customResponse);
 
+        this.mockMvc.perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("Unsuccessful: Please enter playlist name."));
+    }
 
 }
