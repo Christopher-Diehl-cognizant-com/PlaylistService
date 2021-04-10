@@ -3,6 +3,7 @@ package com.galvanize.playlist.service;
 import com.galvanize.playlist.entity.PlayListEntity;
 import com.galvanize.playlist.repository.PlayListRepo;
 import com.galvanize.playlist.response.CustomResponse;
+import com.galvanize.playlist.response.PlayListSongsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -58,4 +59,7 @@ public class PlayListService {
         return customResponse;
     }
 
+    public PlayListSongsResponse getPlaylistSongs(String anyString) {
+        return null;
+    }
 }

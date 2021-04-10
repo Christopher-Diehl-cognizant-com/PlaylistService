@@ -3,6 +3,7 @@ package com.galvanize.playlist.unit.controller;
 import com.galvanize.playlist.controller.PlaylistController;
 import com.galvanize.playlist.entity.PlayListEntity;
 import com.galvanize.playlist.response.CustomResponse;
+import com.galvanize.playlist.response.PlayListSongsResponse;
 import com.galvanize.playlist.service.PlayListService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.util.Arrays;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -122,6 +126,27 @@ public class PlayListControllerUnitTest {
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("message").value("Successfully: Removed song from test_list playlist."))
+                .andDo(print());
+    }
+
+
+    @Test
+    public void getPlayListSongs() throws Exception {
+        RequestBuilder rq = get("/playlist/song")
+                .param("name", "test_list")
+                ;
+        PlayListSongsResponse playListSongsResponse = new PlayListSongsResponse();
+        playListSongsResponse.setStatus(HttpStatus.OK);
+        playListSongsResponse.setMessage("Playlist test_list songs.");
+        playListSongsResponse.setSongs(Arrays.asList("song 1", "song 2"));
+
+        when(playListService.getPlaylistSongs(anyString())).thenReturn(playListSongsResponse);
+
+        this.mockMvc.perform(rq)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.songs", hasSize(2)))
+                .andExpect(jsonPath("$.songs[0]").value("song 1"))
+                .andExpect(jsonPath("$.songs[1]").value("song 2"))
                 .andDo(print());
     }
 }

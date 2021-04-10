@@ -37,10 +37,7 @@ public class PlaylistController {
 
     @GetMapping("/song")
     public ResponseEntity<?> playListSongs(@RequestParam("name") String name){
-        PlayListSongsResponse playListSongsResponse = new PlayListSongsResponse();
-        playListSongsResponse.setStatus(HttpStatus.OK);
-        playListSongsResponse.setMessage("Playlist test_list songs.");
-        playListSongsResponse.setSongs(Arrays.asList("song 1", "song 2"));
+        PlayListSongsResponse playListSongsResponse = playListService.getPlaylistSongs(name);
         return new ResponseEntity<>(playListSongsResponse, playListSongsResponse.getStatus());
     }
 
