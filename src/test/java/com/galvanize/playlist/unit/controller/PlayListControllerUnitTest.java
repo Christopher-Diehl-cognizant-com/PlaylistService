@@ -2,6 +2,7 @@ package com.galvanize.playlist.unit.controller;
 
 import com.galvanize.playlist.controller.PlaylistController;
 import com.galvanize.playlist.response.CustomResponse;
+import com.galvanize.playlist.service.PlayListService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,6 +28,12 @@ public class PlayListControllerUnitTest {
     @MockBean
     private PlayListService playListService;
 
+    /**
+     * When a playlist is created with a name
+     * Then a confirmation is returned that it was successful.
+     * And the playlist is empty.
+     * @throws Exception
+     */
     @Test
     public void createNewPlaylistSuccessTest() throws Exception {
         RequestBuilder requestBuilder= post("/playlist")
@@ -41,6 +48,27 @@ public class PlayListControllerUnitTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("message").value("Successfully Created."));
     }
+
+    /**
+     * When a playlist is created with existing name
+     * Then a message is returned that it was unsuccessful.
+     */
+
+    @Test
+    public void createNewPlaylistFailedDuplicationTest() throws Exception {
+        RequestBuilder requestBuilder= post("/playlist")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("name","test_list");
+        CustomResponse customResponse = new CustomResponse();
+        customResponse.setMessage("Unsuccessful: Already Exist.");
+        customResponse.setStatus(HttpStatus.BAD_REQUEST);
+        when(playListService.createPlaylist(anyString())).thenReturn(customResponse);
+
+        this.mockMvc.perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("Unsuccessful: Already Exist."));
+    }
+
 
 
 }
