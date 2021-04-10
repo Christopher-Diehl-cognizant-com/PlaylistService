@@ -3,25 +3,21 @@ package com.galvanize.playlist.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.playlist.entity.PlayListEntity;
 import com.galvanize.playlist.repository.PlayListRepo;
-import com.galvanize.playlist.response.CustomResponse;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -56,6 +52,9 @@ public class PlaylistServiceIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("message").value("Successfully Created."))
                 .andDo(print())
+                .andDo(document("playlist", responseFields(
+                        fieldWithPath("message").description("Response Message")
+                )))
         ;
     }
 
@@ -102,7 +101,11 @@ public class PlaylistServiceIT {
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("message").value("Successfully: Added song to test_list playlist."))
-        .andDo(print());
+        .andDo(print())
+                .andDo(document("add-playlist-song", responseFields(
+                        fieldWithPath("message").description("Response Message")
+                )))
+        ;
     }
 
     @Test
@@ -120,7 +123,11 @@ public class PlaylistServiceIT {
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("message").value("Successfully: Removed song from test_list playlist."))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("delete-playlist-song", responseFields(
+                        fieldWithPath("message").description("Response Message")
+                )))
+        ;
     }
 
     @Test
@@ -139,6 +146,11 @@ public class PlaylistServiceIT {
                 .andExpect(jsonPath("$.songs", hasSize(2)))
                 .andExpect(jsonPath("$.songs[0]").value("song 1"))
                 .andExpect(jsonPath("$.songs[1]").value("song 2"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("list-playlist-songs", responseFields(
+                        fieldWithPath("message").description("Response Message"),
+                        fieldWithPath("songs").description("List of Songs.")
+                )))
+        ;
     }
 }
