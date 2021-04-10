@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -119,6 +120,23 @@ public class PlaylistServiceIT {
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("message").value("Successfully: Removed song from test_list playlist."))
+                .andDo(print());
+    }
+
+    @Test
+    public void getPlayListSongs() throws Exception {
+        PlayListEntity playListEntity = new PlayListEntity();
+        playListEntity.setName("test_list");
+        playListEntity.addSong("first_song");
+        playListEntity.addSong("remove_song");
+        playListRepo.save(playListEntity);
+        RequestBuilder rq = get("/playlist/song")
+                            .param("name", "test_list")
+                ;
+
+        this.mockMvc.perform(rq)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
     }
 }
