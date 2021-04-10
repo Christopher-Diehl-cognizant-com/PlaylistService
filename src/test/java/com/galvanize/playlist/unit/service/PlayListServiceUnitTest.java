@@ -16,7 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +49,22 @@ public class PlayListServiceUnitTest {
         assertNotNull(actualResponse);
         assertEquals(actualResponse.getStatus(), HttpStatus.CREATED);
         assertEquals(actualResponse.getMessage(), "Successfully Created.");
+    }
+
+    /**
+     * When a playlist is created with existing name
+     * Then a message is returned that it was unsuccessful.
+     */
+
+    @Test
+    public void createNewPlaylistFailedDuplicationTest() throws Exception {
+
+        when(playListRepo.findPlayListEntityByName(anyString())).thenReturn(new PlayListEntity());
+        CustomResponse actualResponse = playListService.createPlaylist("test_list");
+        assertNotNull(actualResponse);
+        assertEquals(actualResponse.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(actualResponse.getMessage(), "Unsuccessful: Already Exist.");
+
     }
 
 

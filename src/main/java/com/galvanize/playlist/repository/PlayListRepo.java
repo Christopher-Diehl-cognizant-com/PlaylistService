@@ -9,4 +9,6 @@ import java.util.UUID;
 @Repository
 public interface PlayListRepo extends JpaRepository<PlayListEntity, UUID> {
 
+    PlayListEntity findPlayListEntityByName(String name);
+
 }

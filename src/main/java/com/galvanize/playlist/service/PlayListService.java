@@ -14,10 +14,16 @@ public class PlayListService {
     private PlayListRepo playListRepo;
 
     public CustomResponse createPlaylist(String name) {
+        CustomResponse customResponse = new CustomResponse();
+        if(playListRepo.findPlayListEntityByName(name) != null){
+            customResponse.setMessage("Unsuccessful: Already Exist.");
+            customResponse.setStatus(HttpStatus.BAD_REQUEST);
+            return customResponse;
+        }
         PlayListEntity savedPlayListEntity = new PlayListEntity();
         savedPlayListEntity.setName(name);
         savedPlayListEntity = playListRepo.save(savedPlayListEntity);
-        CustomResponse customResponse = new CustomResponse();
+
         customResponse.setMessage("Successfully Created.");
         customResponse.setStatus(HttpStatus.CREATED);
         return customResponse;
