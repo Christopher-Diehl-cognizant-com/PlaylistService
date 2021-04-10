@@ -32,14 +32,14 @@ public class PlayListControllerUnitTest {
         RequestBuilder requestBuilder= post("/playlist")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .param("name","test_list");
-        CustomResponse customResponse = new CustomResponse();
-        customResponse.setMessage("Successfully Created.");
-        customResponse.setStatus(HttpStatus.CREATED);
+            CustomResponse customResponse = new CustomResponse();
+            customResponse.setMessage("Successfully Created.");
+            customResponse.setStatus(HttpStatus.CREATED);
         when(playListService.createPlaylist(anyString())).thenReturn(customResponse);
 
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("message").value("successful"));
+                .andExpect(jsonPath("message").value("Successfully Created."));
     }
 
 
