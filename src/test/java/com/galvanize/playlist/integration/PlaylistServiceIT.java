@@ -94,11 +94,9 @@ public class PlaylistServiceIT {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .param("name","test_list")
                 .param("song_name","My song");
-        CustomResponse customResponse = new CustomResponse();
-        customResponse.setMessage("Successfully: Added song to test_list playlist.");
-        customResponse.setStatus(HttpStatus.CREATED);
         this.mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("message").value("Successfully: Added song to test_list playlist."));
+                .andExpect(jsonPath("message").value("Successfully: Added song to test_list playlist."))
+        .andDo(print());
     }
 }

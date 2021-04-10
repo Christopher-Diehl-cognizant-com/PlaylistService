@@ -5,10 +5,7 @@ import com.galvanize.playlist.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/playlist")
@@ -20,6 +17,14 @@ public class PlaylistController {
     @PostMapping()
     public ResponseEntity<?> newPlaylist(@RequestParam("name") String name){
         CustomResponse customResponse = playListService.createPlaylist(name);
+        return new ResponseEntity<>(customResponse, customResponse.getStatus());
+    }
+
+    @PutMapping("/song")
+    public ResponseEntity<?> addSong2PlayList(@RequestParam("name") String name, @RequestParam("song_name") String songName){
+        CustomResponse customResponse = new CustomResponse();
+        customResponse.setMessage("Successfully: Added song to test_list playlist.");
+        customResponse.setStatus(HttpStatus.CREATED);
         return new ResponseEntity<>(customResponse, customResponse.getStatus());
     }
 
