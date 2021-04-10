@@ -3,6 +3,7 @@ package com.galvanize.playlist.unit.service;
 import com.galvanize.playlist.entity.PlayListEntity;
 import com.galvanize.playlist.repository.PlayListRepo;
 import com.galvanize.playlist.response.CustomResponse;
+import com.galvanize.playlist.response.PlayListSongsResponse;
 import com.galvanize.playlist.service.PlayListService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -120,5 +122,23 @@ public class PlayListServiceUnitTest {
         assertEquals(actualResponse.getStatus(),HttpStatus.NO_CONTENT);
         assertEquals(actualResponse.getMessage(),"Successfully: Removed song from test_list playlist.");
 
+    }
+
+    @Test
+    public void getPlayListSongs(){
+        PlayListEntity playListEntity = new PlayListEntity();
+        playListEntity.setName("test_list");
+        playListEntity.addSong("Song 1");
+        playListEntity.addSong("Song 2");
+
+        when(this.playListRepo.findPlayListEntityByName(anyString())).thenReturn(playListEntity);
+
+        PlayListSongsResponse actualResponse = this.playListService.getPlaylistSongs("test_list");
+
+        assertNotNull(actualResponse);
+        assertEquals(actualResponse.getStatus(), HttpStatus.OK);
+        assertEquals(actualResponse.getMessage(), "Playlist test_list songs.");
+        assertEquals(playListEntity.getSongList().size(), 2);
+        assertEquals(playListEntity.getSongList(), Arrays.asList("Song 1", "Song 2"));
     }
 }

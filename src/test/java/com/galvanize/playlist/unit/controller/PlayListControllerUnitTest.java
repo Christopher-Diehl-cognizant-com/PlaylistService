@@ -144,6 +144,7 @@ public class PlayListControllerUnitTest {
 
         this.mockMvc.perform(rq)
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("message").value("Playlist test_list songs."))
                 .andExpect(jsonPath("$.songs", hasSize(2)))
                 .andExpect(jsonPath("$.songs[0]").value("song 1"))
                 .andExpect(jsonPath("$.songs[1]").value("song 2"))
